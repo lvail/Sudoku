@@ -28,13 +28,36 @@ public class Sudoku {
 		puzzlePrint();
 		
 		// Test my set building methods
-		System.out.println("rowSet(0) = " + rowSet(0));
-		System.out.println("rowSet(8) = " + rowSet(8));
-		System.out.println("colSet(0) = " + colSet(0));
-		System.out.println("colSet(8) = " + colSet(8));
-		System.out.println("blockSet(8, 0) = " + blockSet(8, 0));
-		System.out.println("blockSet(4, 4) = " + blockSet(4, 4));
-		System.out.println("blockSet(1, 7) = " + blockSet(1, 7));
+//		System.out.println("rowSet(0) = " + rowSet(0));
+//		System.out.println("rowSet(8) = " + rowSet(8));
+//		System.out.println("colSet(0) = " + colSet(0));
+//		System.out.println("colSet(8) = " + colSet(8));
+//		System.out.println("blockSet(8, 0) = " + blockSet(8, 0));
+//		System.out.println("blockSet(4, 4) = " + blockSet(4, 4));
+//		System.out.println("blockSet(1, 7) = " + blockSet(1, 7));
+		
+		int round = 0;
+		boolean solved;
+		do {
+			solved = true;
+			System.err.println("round " + ++round);
+			for (int r = 0; r < 9; r++) {
+				for (int c = 0; c < 9; c++) {
+					if (puzzle[r][c].size() > 1) {
+						solved = false;
+						System.out.println("Before: ["+r+"]["+c+"]="+puzzle[r][c]);
+						SortedSet<Integer> S = new TreeSet<Integer>();
+						S.addAll(rowSet(r));
+						S.addAll(colSet(c));
+						S.addAll(blockSet(r, c));
+						puzzle[r][c].removeAll(S);
+						System.out.println("After:  ["+r+"]["+c+"]="+puzzle[r][c]);
+					}
+				}
+			} 
+		} while (!solved);
+		
+		puzzlePrint();
 	}
 
 	private void puzzleInit() {
@@ -90,32 +113,32 @@ public class Sudoku {
 		
 	}
 
-	private SortedSet<Integer> rowSet(int row) {
+	private SortedSet<Integer> rowSet(int r) {
 		SortedSet<Integer> set = new TreeSet<Integer>();
 		for (int c = 0; c < 9; c++) {
-			if (puzzle[row][c].size() == 1) {
-				set.add(puzzle[row][c].first());
+			if (puzzle[r][c].size() == 1) {
+				set.add(puzzle[r][c].first());
 			}
 		}
 		return set;
 	}
 	
-	private SortedSet<Integer> colSet(int col) {
+	private SortedSet<Integer> colSet(int c) {
 		SortedSet<Integer> set = new TreeSet<Integer>();
 		for (int r = 0; r < 9; r++) {
-			if (puzzle[r][col].size() == 1) {
-				set.add(puzzle[r][col].first());
+			if (puzzle[r][c].size() == 1) {
+				set.add(puzzle[r][c].first());
 			}
 		}
 		return set;
 	}
 			
-	private SortedSet<Integer> blockSet(int row, int col) {
+	private SortedSet<Integer> blockSet(int r, int c) {
 		SortedSet<Integer> set = new TreeSet<Integer>();
-		int br = (row / 3) * 3;
-		int bc = (col / 3) * 3;
-		for (int r = br; r < br + 3; r++) {
-			for (int c = bc; c < bc + 3; c++) {
+		int br = (r / 3) * 3;
+		int bc = (c / 3) * 3;
+		for (r = br; r < br + 3; r++) {
+			for (c = bc; c < bc + 3; c++) {
 				if (puzzle[r][c].size() == 1) {
 					set.add(puzzle[r][c].first());
 				}
