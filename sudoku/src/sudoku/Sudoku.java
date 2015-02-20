@@ -23,7 +23,7 @@ public class Sudoku {
 	// main entry point for app
 	private void run()
 	{
-		System.out.println("sudoku running...");
+		System.err.println("sudoku running...");
 		puzzleInit();
 		puzzlePrint();
 		
@@ -40,7 +40,7 @@ public class Sudoku {
 		boolean solved;
 		do {
 			solved = true;
-			System.out.println("round " + ++round);
+			System.err.println("round " + ++round);
 			for (int r = 0; r < 9; r++) {
 				for (int c = 0; c < 9; c++) {
 					if (puzzle[r][c].size() > 1) {
@@ -61,17 +61,17 @@ public class Sudoku {
 	}
 
 	private void puzzleInit() {
-		System.out.println("puzzleInit()...");
+		System.err.println("puzzleInit()...");
 		
-		String stringPuzzle = "  8 72 96" +		// 9 x 9 sudoku puzzle to solve, 2 star difficulty
-							  " 2 68   5" +
-							  "    31  2" +
-							  "  6 2 5  " +
-							  "   8 3   " +
-							  "  3 4 1  " +
-							  "4  39    " +
-							  "3   65 7 " +
-							  "26 71 8  " ;
+		String stringPuzzle = "5  421   " +		// 9 x 9 sudoku puzzle to solve
+							  "3   9 1 4" +
+							  " 71 3  2 " +
+							  "215  97 6" +
+							  "  35784  " +
+							  "8 76  395" +
+							  " 5  8 93 " +
+							  "1 8 6   7" +
+							  "   153  8" ;
 		
 		SortedSet<Integer> U = new TreeSet<Integer>();	// U is the universal sudoku set of digits 1-9
 		U.add(1); U.add(2); U.add(3); U.add(4); U.add(5);
@@ -89,7 +89,7 @@ public class Sudoku {
 				} else if (ch == ' ') {
 					puzzle[r][c] = new TreeSet<Integer>(U);
 				} else {
-					System.out.println("Bad character '" + ch + "' initilizing puzzle.");
+					System.err.println("Bad character '" + ch + "' initilizing puzzle.");
 				}
 				
 			}
@@ -97,7 +97,7 @@ public class Sudoku {
 	}
 
 	private void puzzlePrint() {
-		System.out.println("puzzlePrint()...");
+		System.err.println("puzzlePrint()...");
 
 		for (int r = 0; r < 9; r++) {
 			for (int c = 0; c < 9; c++) {
