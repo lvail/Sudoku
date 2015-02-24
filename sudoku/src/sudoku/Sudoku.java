@@ -12,17 +12,17 @@ import java.util.SortedSet;
 
 public class Sudoku {
 
-	// input for a 9 x 9 sudoku puzzle to solve, difficulty 2 of 5
+	// input for a 9 x 9 sudoku puzzle to solve, difficulty 3 of 5
 	String stringPuzzle = 
-			  "  8 72 96" +
-			  " 2 68   5" +
-			  "    31  2" +
-			  "  6 2 5  " +
-			  "   8 3   " +
-			  "  3 4 1  " +
-			  "4  39    " +
-			  "3   65 7 " +
-			  "26 71 8  " ;
+			  " 5  9   7" +
+			  "  8 4 9  " +
+			  "    2345 " +
+			  "5  9  3  " +
+			  "8 4   7 1" +
+			  "  3  1  9" +
+			  " 4538    " +
+			  "  7 5 6  " +
+			  "9   1  7 " ;
 
 	// main data structure
 	private SortedSet<Integer>[][] puzzle = new TreeSet[9][9];
