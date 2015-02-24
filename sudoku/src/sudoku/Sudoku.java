@@ -21,57 +21,72 @@ public class Sudoku {
 		app.run();	// makes methods non-static
 	}
 	
+	// remove known row, column, block integers from each cell
+	private boolean strategy1() {
+		boolean changes = false;
+		changes = false;
+		for (int r = 0; r < 9; r++) {
+			for (int c = 0; c < 9; c++) {
+//					System.out.println("["+(r+1)+(c+1)+"]="+puzzle[r][c]);
+				if (puzzle[r][c].size() > 1) {
+					SortedSet<Integer> S = new TreeSet<Integer>();
+					S.addAll(rowSet(r));
+					S.addAll(colSet(c));
+					S.addAll(blockSet(r, c));
+					if (puzzle[r][c].removeAll(S)) {
+						changes = true;
+					}
+				}
+			}
+		}
+		return changes;	
+	}
+
+	// remove "could be" integers from every other row or column in each cell if only one possible
+	private boolean strategy2() {
+		SortedSet<Integer> S = new TreeSet<Integer>();
+		boolean changes = false;
+		for (int r = 0; r < 9; r++) {
+			for (int c = 0; c < 9; c++) {
+	//					System.out.println("["+(r+1)+(c+1)+"]="+puzzle[r][c]);
+				if (puzzle[r][c].size() > 1) {
+					// try row first
+					S.clear();
+					S.addAll(puzzle[r][c]);
+					S.removeAll(rowSet2(r, c));
+					if (S.size() == 1) {
+						puzzle[r][c].clear();
+						puzzle[r][c].addAll(S);
+						changes = true;
+					} else {
+						// try column second
+						S.clear();
+						S.addAll(puzzle[r][c]);
+						S.removeAll(colSet2(r, c));
+						if (S.size() == 1) {
+							puzzle[r][c].clear();
+							puzzle[r][c].addAll(S);
+							changes = true;
+						}
+					}
+				}
+			}
+		}
+		return changes;
+	}
+	
 	// main entry point for app
 	private void run()
 	{
 		System.out.println("sudoku running...");
 		initPuzzle();
 		printPuzzle();
+
+		strategy1();
+		printPuzzle();
 		
-		// strategy #1, simple row, column, block elimination to determine a single possible integer
-		boolean changes;
-		do {
-			changes = false;
-			for (int r = 0; r < 9; r++) {
-				for (int c = 0; c < 9; c++) {
-					System.out.println("["+(r+1)+(c+1)+"]="+puzzle[r][c]);
-					if (puzzle[r][c].size() > 1) {
-						SortedSet<Integer> S = new TreeSet<Integer>();
-						S.addAll(rowSet(r));
-						S.addAll(colSet(c));
-						S.addAll(blockSet(r, c));
-						if (puzzle[r][c].removeAll(S)) {
-							changes = true;
-						}
-					}
-				}
-			}
-			System.out.println();
-		} while (changes);
-
-		// strategy #2, remove "could be" integers from every cell in this row and column
-		do {
-			changes = false;
-			for (int r = 0; r < 9; r++) {
-				for (int c = 0; c < 9; c++) {
-					System.out.println("["+(r+1)+(c+1)+"]="+puzzle[r][c]);
-					if (puzzle[r][c].size() > 1) {
-						SortedSet<Integer> S = new TreeSet<Integer>();
-						S.addAll(puzzle[r][c]);
-						S.removeAll(rowSet2(r));
-						S.removeAll(colSet2(c));
-						if (S.size() == 1) {
-							puzzle[r][c].clear();
-							puzzle[r][c].addAll(S);
-							changes = true;
-							System.out.println("["+(r+1)+(c+1)+"]="+puzzle[r][c]);
-						}
-					}
-				}
-			}
-			System.out.println();
-		} while (changes);
-
+		strategy2();
+		
 		System.out.println("-----------------------------------");
 		printPuzzle();
 	}
@@ -108,21 +123,7 @@ public class Sudoku {
 				} else if (ch == ' ') {
 					puzzle[r][c] = new TreeSet<Integer>(U);
 				} else {
-					System.err.println("Bad character '" + ch + "' initilizing puzzle.");
-				}
-				
-			}
-		}
-
-		printPuzzle();
-		
-		// remove known row, column, and 3x3 block integers from each incomplete position
-		for (int r = 0; r < 9; r++) {
-			for (int c = 0; c < 9; c++) {
-				if (puzzle[r][c].size() > 1) {
-					puzzle[r][c].removeAll(rowSet(r));
-					puzzle[r][c].removeAll(colSet(c));
-					puzzle[r][c].removeAll(blockSet(r,c));
+					System.out.println("Bad character '" + ch + "' initilizing puzzle.");
 				}
 			}
 		}
@@ -180,22 +181,25 @@ public class Sudoku {
 		return set;
 	}
 
-	// returns set of "could be" sets of integers on row r
-	private SortedSet<Integer> rowSet2(int r) {
-		SortedSet<Integer> set = new TreeSet<Integer>();
+	// returns set of other "could be" sets of integers on row except col
+	private SortedSet<Integer> rowSet2(int row, int col) {
+		SortedSet<Integer> T = new TreeSet<Integer>();
 		for (int c = 0; c < 9; c++) {
-			set.addAll(puzzle[r][c]);
+			if (c != col) {
+				T.addAll(puzzle[row][c]);
+			}
 		}
-		return set;
+		return T;
 	}
 	
-	// returns set of "could be" sets of integers on column c
-	private SortedSet<Integer> colSet2(int c) {
-		SortedSet<Integer> set = new TreeSet<Integer>();
+	// returns set of other "could be" sets of integers on col except row
+	private SortedSet<Integer> colSet2(int row, int col) {
+		SortedSet<Integer> T = new TreeSet<Integer>();
 		for (int r = 0; r < 9; r++) {
-				set.addAll(puzzle[r][c]);
+			if (r != row)
+				T.addAll(puzzle[r][col]);
 		}
-		return set;
+		return T;
 	}
 
 }
