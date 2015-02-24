@@ -12,6 +12,18 @@ import java.util.SortedSet;
 
 public class Sudoku {
 
+	// input for a 9 x 9 sudoku puzzle to solve, difficulty 1 of 5
+	String stringPuzzle = 
+			  "5  421   " +		
+			  "3   9 1 4" +
+			  " 71 3  2 " +
+			  "215  97 6" +
+			  "  35784  " +
+			  "8 76  395" +
+			  " 5  8 93 " +
+			  "1 8 6   7" +
+			  "   153  8" ;
+	
 	// main data structure
 	private SortedSet<Integer>[][] puzzle = new TreeSet[9][9];
 	
@@ -91,16 +103,6 @@ public class Sudoku {
 	// initialize puzzle array to known and "could be" sets
 	private void initPuzzle() {
 		System.out.println("puzzleInit()...");
-		
-		String stringPuzzle = "  8 72 96" +		// 9 x 9 sudoku difficulty 2 puzzle to solve
-							  " 2 68   5" +
-							  "    31  2" +
-							  "  6 2 5  " +
-							  "   8 3   " +
-							  "  3 4 1  " +
-							  "4  39    " +
-							  "3   65 7 " +
-							  "26 71 8  " ;
 		
 		SortedSet<Integer> U = new TreeSet<Integer>();	// U is the universal sudoku set of digits 1-9
 		U.add(1); U.add(2); U.add(3); U.add(4); U.add(5);
