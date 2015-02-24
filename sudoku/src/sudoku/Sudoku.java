@@ -81,11 +81,8 @@ public class Sudoku {
 		System.out.println("sudoku running...");
 		initPuzzle();
 		printPuzzle();
-
-		strategy1();
-		printPuzzle();
-		
-		strategy2();
+		while (strategy1() && strategy2()) {
+		}
 		
 		System.out.println("-----------------------------------");
 		printPuzzle();
