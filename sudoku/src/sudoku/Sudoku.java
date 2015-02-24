@@ -12,17 +12,17 @@ import java.util.SortedSet;
 
 public class Sudoku {
 
-	// input for a 9 x 9 sudoku puzzle to solve, difficulty 3 of 5
+	// input for a 9 x 9 sudoku puzzle to solve, difficulty 4 of 5
 	String stringPuzzle = 
-			  " 5  9   7" +
-			  "  8 4 9  " +
-			  "    2345 " +
-			  "5  9  3  " +
-			  "8 4   7 1" +
-			  "  3  1  9" +
-			  " 4538    " +
-			  "  7 5 6  " +
-			  "9   1  7 " ;
+			  "    74 2 " +
+			  "   93  5 " +
+			  "49  8   3" +
+			  "9 1     2" +
+			  "  7   9  " +
+			  "2     1 4" +
+			  "6   2  95" +
+			  " 8  47   " +
+			  " 2 39    " ;
 
 	// main data structure
 	private SortedSet<Integer>[][] puzzle = new TreeSet[9][9];
@@ -36,7 +36,7 @@ public class Sudoku {
 	// main entry point for app
 	private void run()
 	{
-		System.out.println("sudoku running...");
+		System.out.println("sudoku run()...");
 		initPuzzle();
 		printPuzzle();
 		while (strategy1() && strategy2()) {
@@ -48,7 +48,7 @@ public class Sudoku {
 
 	// initialize puzzle array to known and "could be" sets
 	private void initPuzzle() {
-		System.out.println("puzzleInit()...");
+		System.out.println("initPuzzle()()...");
 		
 		SortedSet<Integer> U = new TreeSet<Integer>();	// U is the universal sudoku set of digits 1-9
 		U.add(1); U.add(2); U.add(3); U.add(4); U.add(5);
@@ -75,7 +75,7 @@ public class Sudoku {
 	}
 
 	private void printPuzzle() {
-		System.out.println("puzzlePrint()...");
+		System.out.println("printPuzzle()()...");
 	
 		for (int r = 0; r < 9; r++) {
 			for (int c = 0; c < 9; c++) {
@@ -88,11 +88,13 @@ public class Sudoku {
 			System.out.println();
 		}
 	}
-
+	
+	private static int pass1; 
 	// remove known row, column, block integers from each cell
 	private boolean strategy1() {
 		boolean changes = false;
 		changes = false;
+		System.out.println("pass " + ++pass1 + "strategy1()...");
 		for (int r = 0; r < 9; r++) {
 			for (int c = 0; c < 9; c++) {
 //					System.out.println("["+(r+1)+(c+1)+"]="+puzzle[r][c]);
@@ -147,10 +149,12 @@ public class Sudoku {
 		return set;
 	}
 
+	private static int pass2 = 0;
 	// remove "could be" integers from every other row or column in each cell if only one possible
 	private boolean strategy2() {
 		SortedSet<Integer> S = new TreeSet<Integer>();
 		boolean changes = false;
+		System.out.println("pass " + ++pass2 + "strategy2()...");
 		for (int r = 0; r < 9; r++) {
 			for (int c = 0; c < 9; c++) {
 	//					System.out.println("["+(r+1)+(c+1)+"]="+puzzle[r][c]);
