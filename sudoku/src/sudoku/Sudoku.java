@@ -25,6 +25,7 @@ public class Sudoku {
 			  " 2 39    " ;
 
 	// main data structure
+	@SuppressWarnings("unchecked")
 	private SortedSet<Integer>[][] puzzle = new TreeSet[9][9];
 	
 	public static void main(String [] args)
