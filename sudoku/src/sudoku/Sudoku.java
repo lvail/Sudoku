@@ -13,7 +13,7 @@ import java.util.SortedSet;
 public class Sudoku {
 
 	// input for a 9 x 9 sudoku puzzle to solve, difficulty 4 of 5
-	String stringPuzzle = 
+	private String stringPuzzle = 
 			  "    74 2 " +
 			  "   93  5 " +
 			  "49  8   3" +
