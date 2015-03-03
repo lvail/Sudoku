@@ -95,7 +95,7 @@ public class Sudoku {
 	private boolean strategy1() {
 		boolean changes = false;
 		changes = false;
-		System.out.println("pass " + ++pass1 + "strategy1()...");
+		System.out.println("pass " + ++pass1 + " strategy1()...");
 		for (int r = 0; r < 9; r++) {
 			for (int c = 0; c < 9; c++) {
 //					System.out.println("["+(r+1)+(c+1)+"]="+puzzle[r][c]);
@@ -155,7 +155,7 @@ public class Sudoku {
 	private boolean strategy2() {
 		SortedSet<Integer> S = new TreeSet<Integer>();
 		boolean changes = false;
-		System.out.println("pass " + ++pass2 + "strategy2()...");
+		System.out.println("pass " + ++pass2 + " strategy2()...");
 		for (int r = 0; r < 9; r++) {
 			for (int c = 0; c < 9; c++) {
 	//					System.out.println("["+(r+1)+(c+1)+"]="+puzzle[r][c]);
