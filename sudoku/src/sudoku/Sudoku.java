@@ -19,17 +19,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Sudoku {
 
-	// input for a 9 x 9 sudoku puzzle to solve, difficulty 4 of 5
-	private String stringPuzzle = 
-			  "    74 2 " +
-			  "   93  5 " +
-			  "49  8   3" +
-			  "9 1     2" +
-			  "  7   9  " +
-			  "2     1 4" +
-			  "6   2  95" +
-			  " 8  47   " +
-			  " 2 39    " ;
+	// input for a 9 x 9 sudoku puzzle to solve
+	private String stringPuzzle;
 
 	// main data structure
 	@SuppressWarnings("unchecked")
