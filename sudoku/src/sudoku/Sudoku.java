@@ -9,6 +9,13 @@ package sudoku;
 
 import java.util.TreeSet;
 import java.util.SortedSet;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.Scanner;
+
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 
 public class Sudoku {
 
@@ -50,6 +57,7 @@ public class Sudoku {
 	// initialize puzzle array to known and "could be" sets
 	private void initPuzzle() {
 		System.out.println("initPuzzle()()...");
+		openFile();
 		
 		SortedSet<Integer> U = new TreeSet<Integer>();	// U is the universal sudoku set of digits 1-9
 		U.add(1); U.add(2); U.add(3); U.add(4); U.add(5);
@@ -57,7 +65,7 @@ public class Sudoku {
 	
 		char ch;
 		int digit;
-	
+		
 		// load stringPuzzle into 9x9 array puzzle
 		for (int r = 0; r < 9; r++) {
 			for (int c = 0; c < 9; c++) {
@@ -73,6 +81,34 @@ public class Sudoku {
 				}
 			}
 		}
+	}
+
+	private void openFile() {
+		String puzzleFileName;
+	    JFileChooser chooser = new JFileChooser(".");
+	    FileNameExtensionFilter filter = new FileNameExtensionFilter("Sudoku puzzles", "sudoku");
+
+	    chooser.setFileFilter(filter);
+	    int returnVal = chooser.showOpenDialog(null);
+	    if(returnVal == JFileChooser.APPROVE_OPTION) {
+	    	puzzleFileName = chooser.getSelectedFile().getName();
+	    	System.out.println("You chose to open this file: " + puzzleFileName);
+			Scanner scanner;
+			try {
+				scanner = new Scanner(new FileReader(puzzleFileName));
+				stringPuzzle = "";
+				for (int r = 0; r < 9; r++) {
+					stringPuzzle += scanner.nextLine();
+				}
+				scanner.close();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+				System.exit(0);
+			}
+	    } else {
+	    	System.out.println("Must choose a valid sudoku puzzle file.  Cannot continue, Good-bye!");
+	    	System.exit(0);
+	    }
 	}
 
 	private void printPuzzle() {
