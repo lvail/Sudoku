@@ -38,11 +38,29 @@ public class Sudoku {
 		System.out.println("sudoku run()...");
 		initPuzzle();
 		printPuzzle();
-		while (strategy1() && strategy2()) {
+		while (true) {
+			while (strategy1()) {
+			}
+			while (strategy2()) {
+			}
+			while (strategy3()) {
+			}
+			if (done())
+				break;
 		}
 		
 		System.out.println("-----------------------------------");
 		printPuzzle();
+	}
+	
+	private boolean done() {
+		for (int r = 0; r < 9; r++) {
+			for (int c = 0; c < 9; c++) {
+				if (puzzle[r][c].size() != 1)
+					return false;
+			}
+		}
+		return true;
 	}
 
 	// initialize puzzle array to known and "could be" sets
@@ -233,4 +251,69 @@ public class Sudoku {
 		return T;
 	}
 
+	private static int pass3 = 0;
+	// if 2 cells in a row or column have equal "could be" sets of size 2, 
+	// remove them from all other cells in the row or column 
+	private boolean strategy3() {
+		SortedSet<Integer> S = new TreeSet<Integer>();
+		System.out.println("pass " + ++pass3 + " strategy3()...");
+		
+		// try each row first
+		for (int r = 0; r < 9; r++) {
+			S.clear();
+			for (int c = 0; c < 9; c++) {
+				if (puzzle[r][c].size() == 2) {
+					if (S.isEmpty()) {
+						S.add(c);
+					} else if (puzzle[r][S.first()].equals(puzzle[r][c])) {
+						S.add(c);
+					}
+				}
+			}
+			if (S.size() == 2) {
+				removeFromRow3(r, S);
+				return true;
+			}
+		}
+		// now try each column
+		for (int c = 0; c < 9; c++) {
+			S.clear();
+			for (int r = 0; r < 9; r++) {
+				if (puzzle[r][c].size() == 2) {
+					if (S.isEmpty()) {
+						S.add(r);
+					} else if (puzzle[S.first()][c].equals(puzzle[r][c])) {
+						S.add(r);
+					}
+				}
+			}
+			if (S.size() == 2) {
+				removeFromCol3(c, S);
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	// removes "could be" in all row cells except 2 columns in S which both contain 2 and are equal
+	private void removeFromRow3(int row, SortedSet<Integer> S) {
+		SortedSet<Integer> T = new TreeSet<Integer>();
+		T.addAll(puzzle[row][S.first()]);
+		for (int c = 0; c < 9; c++) {
+			if (!S.contains(c)) {
+				puzzle[row][c].removeAll(T);
+			}
+		}
+	}
+	
+	// removes "could be" in all column cells except 2 rows in S which both contain 2 and are equal
+	private void removeFromCol3(int col, SortedSet<Integer> S) {
+		SortedSet<Integer> T = new TreeSet<Integer>();
+		T.addAll(puzzle[S.first()][col]);
+		for (int r = 0; r < 9; r++) {
+			if (!S.contains(r)) {
+				puzzle[r][col].removeAll(T);
+			}
+		}
+	}
 }
