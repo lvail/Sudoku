@@ -38,13 +38,7 @@ public class Sudoku {
 		System.out.println("sudoku run()...");
 		initPuzzle();
 		printPuzzle();
-		while (true) {
-			while (strategy1()) {
-			}
-			while (strategy2()) {
-			}
-			while (strategy3()) {
-			}
+		while (strategy1() || strategy2() || strategy3()) {
 			if (done())
 				break;
 		}
@@ -256,7 +250,10 @@ public class Sudoku {
 	// remove them from all other cells in the row or column 
 	private boolean strategy3() {
 		SortedSet<Integer> S = new TreeSet<Integer>();
+		boolean changes = false;
 		System.out.println("pass " + ++pass3 + " strategy3()...");
+		
+		printPuzzle();	//debug
 		
 		// try each row first
 		for (int r = 0; r < 9; r++) {
@@ -271,8 +268,7 @@ public class Sudoku {
 				}
 			}
 			if (S.size() == 2) {
-				removeFromRow3(r, S);
-				return true;
+				changes = removeFromRow3(r, S);
 			}
 		}
 		// now try each column
@@ -288,32 +284,47 @@ public class Sudoku {
 				}
 			}
 			if (S.size() == 2) {
-				removeFromCol3(c, S);
-				return true;
+				changes = removeFromCol3(c, S);
 			}
 		}
-		return false;
+		return changes;
 	}
 	
 	// removes "could be" in all row cells except 2 columns in S which both contain 2 and are equal
-	private void removeFromRow3(int row, SortedSet<Integer> S) {
+	private boolean removeFromRow3(int row, SortedSet<Integer> S) {
+		boolean changes = false;
 		SortedSet<Integer> T = new TreeSet<Integer>();
+		SortedSet<Integer> save = new TreeSet<Integer>();
 		T.addAll(puzzle[row][S.first()]);
 		for (int c = 0; c < 9; c++) {
 			if (!S.contains(c)) {
+				save.clear();
+				save.addAll(puzzle[row][c]);	// before removeAll()
 				puzzle[row][c].removeAll(T);
+				if (!save.equals(puzzle[row][c])) {
+					changes = true;
+				}
 			}
 		}
+		return changes;
 	}
 	
 	// removes "could be" in all column cells except 2 rows in S which both contain 2 and are equal
-	private void removeFromCol3(int col, SortedSet<Integer> S) {
+	private boolean removeFromCol3(int col, SortedSet<Integer> S) {
+		boolean changes = false;
 		SortedSet<Integer> T = new TreeSet<Integer>();
+		SortedSet<Integer> save = new TreeSet<Integer>();
 		T.addAll(puzzle[S.first()][col]);
 		for (int r = 0; r < 9; r++) {
 			if (!S.contains(r)) {
+				save.clear();
+				save.addAll(puzzle[r][col]);	// before removeAll()
 				puzzle[r][col].removeAll(T);
+				if (!save.equals(puzzle[r][col])) {
+					changes = true;
+				}
 			}
 		}
+		return changes;
 	}
 }
