@@ -7,6 +7,7 @@
 
 package sudoku;
 
+
 import java.util.TreeSet;
 import java.util.SortedSet;
 import java.io.FileNotFoundException;
@@ -62,7 +63,7 @@ public class Sudoku {
 		System.out.println("initPuzzle()()...");
 		openFile();
 		
-		SortedSet<Integer> U = new TreeSet<Integer>();	// U is the universal sudoku set of digits 1-9
+		final SortedSet<Integer> U = new TreeSet<Integer>();	// U is the universal sudoku set of digits 1-9
 		U.add(1); U.add(2); U.add(3); U.add(4); U.add(5);
 		U.add(6); U.add(7); U.add(8); U.add(9);
 	
